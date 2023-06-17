@@ -7,13 +7,13 @@ import (
 type Review struct {
 	Id      int64   `json:"id"`
 	HotelId int64   `json:"hotel_id"`
-	Body    string  `json:"name"`
+	Body    string  `json:"body"`
 	Rating  float32 `json:"rating"`
 }
 
 type CreateReviewReq struct {
 	HotelId int64   `json:"hotel_id"`
-	Body    string  `json:"name"`
+	Body    string  `json:"body"`
 	Rating  float32 `json:"rating"`
 }
 
