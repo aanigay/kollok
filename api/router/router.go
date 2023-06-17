@@ -1,22 +1,24 @@
 package router
 
 import (
+	"api/internal/booking"
+	"api/internal/hotel"
+	"api/internal/review"
 	"github.com/gin-gonic/gin"
-	"order/internal/dish"
 )
 
 var r *gin.Engine
 
-func InitRouter(dishHandler *dish.Handler) {
+func InitRouter(hotelHandler *hotel.Handler, bookingHandler *booking.Handler, reviewHandler *review.Handler) {
 	r = gin.Default()
 
 	r.Use(CORS())
 
-	r.GET("/get_dish", dishHandler.GetDish)
-	r.GET("/get_dishes", dishHandler.GetAll)
-	r.POST("/create_dish", dishHandler.CreateDish)
-	r.PUT("/update_dish", dishHandler.UpdateDish)
-	r.DELETE("/delete_dish", dishHandler.DeleteDish)
+	r.GET("/hotels/:id", hotelHandler.GetHotel)
+	r.GET("/hotels", hotelHandler.GetAll)
+	r.POST("/bookings", bookingHandler.CreateBooking)
+	r.GET("/reviews/:hotelId", reviewHandler.GetReview)
+	r.POST("/reviews", reviewHandler.CreateReview)
 }
 
 func Start(addr string) error {

@@ -1,10 +1,12 @@
 package main
 
 import (
+	"api/db"
+	"api/internal/booking"
+	"api/internal/hotel"
+	"api/internal/review"
+	"api/router"
 	"log"
-	"order/db"
-	"order/internal/dish"
-	"order/router"
 )
 
 func main() {
@@ -13,11 +15,19 @@ func main() {
 		log.Fatalf("could not initialize database connection: %s", err)
 	}
 
-	dishRep := dish.NewRepository(dbConn.GetDB())
-	dishSvc := dish.NewService(dishRep)
-	dishHandler := dish.NewHandler(dishSvc)
+	hotelRep := hotel.NewRepository(dbConn.GetDB())
+	hotelSvc := hotel.NewService(hotelRep)
+	hotelHandler := hotel.NewHandler(hotelSvc)
 
-	router.InitRouter(dishHandler)
+	bookingRep := booking.NewRepository(dbConn.GetDB())
+	bookingSvc := booking.NewService(bookingRep)
+	bookingHandler := booking.NewHandler(bookingSvc)
+
+	reviewRep := review.NewRepository(dbConn.GetDB())
+	reviewSvc := review.NewService(reviewRep)
+	reviewHandler := review.NewHandler(reviewSvc)
+
+	router.InitRouter(hotelHandler, bookingHandler, reviewHandler)
 	err = router.Start("0.0.0.0:8081")
 	if err != nil {
 		return
